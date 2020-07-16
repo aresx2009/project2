@@ -32,7 +32,6 @@ $(document).ready(() => {
     const url = "/quotes";
     const fetchRes = await fetch(url);
     const json = await fetchRes.json();
-    console.log(json);
     let quote = json.quote.quoteText; // quote
     let author = json.quote.quoteAuthor;
     answers.push({authorName: author, answer: true});
