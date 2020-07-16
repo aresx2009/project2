@@ -5,7 +5,6 @@ $(document).ready(() => {
   let user = JSON.parse(localStorage.getItem("user"));
   let id = user.id;
   $.get("/api/score/" + id).then(data => {
-    console.log(data);
     let scoreid;
     let arr = [];
     for (i in data) {
