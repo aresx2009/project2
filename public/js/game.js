@@ -1,7 +1,10 @@
 $(document).ready(() => {
   let Quizcount = 0;
   let answers = [];
-  let shuffled = answers.map((a) => [Math.random(), a]).sort((a, b) => a[0] - b[0]).map((a) => a[1]);
+  let shuffled = answers
+    .map((a) => [Math.random(), a])
+    .sort((a, b) => a[0] - b[0])
+    .map((a) => a[1]);
   let UserScore = 0;
   let user = JSON.parse(localStorage.getItem("user"));
   let id = user.id;
@@ -10,13 +13,14 @@ $(document).ready(() => {
   $(".help").hide();
   $(".next").hide();
   getFirstAuthor(); //calling getQuote function to start the game
-  async function getFirstAuthor() {// get the quotes and correct author
+  async function getFirstAuthor() {
+    // get the quotes and correct author
     // $(".next").show();
     const url = "/quotes";
     const fetchRes = await fetch(url);
     const json = await fetchRes.json();
-    let wrongAuthor = json.quote.quoteAuthor;
-    answers.push({authorName: wrongAuthor, answer: false});
+    let wrongAuthor = json.data[0].quoteAuthor;
+    answers.push({ authorName: wrongAuthor, answer: false });
     getSecondAuthor();
     getQuoteAuthor();
   }
@@ -24,26 +28,32 @@ $(document).ready(() => {
     const url = "/quotes";
     const fetchRes = await fetch(url);
     const json = await fetchRes.json();
-    let wrongAuthor = json.quote.quoteAuthor;
-    answers.push({authorName: wrongAuthor, answer: false});
+    let wrongAuthor = json.data[0].quoteAuthor;
+    answers.push({ authorName: wrongAuthor, answer: false });
   }
 
   async function getQuoteAuthor() {
     const url = "/quotes";
     const fetchRes = await fetch(url);
     const json = await fetchRes.json();
-    let quote = json.quote.quoteText; // quote
-    let author = json.quote.quoteAuthor;
-    answers.push({authorName: author, answer: true});
-    shuffled = answers.map((a) => [Math.random(), a]).sort((a, b) => a[0] - b[0]).map((a) => a[1]);
+    let quote = json.data[0].quoteText; // quote
+    let author = json.data[0].quoteAuthor;
+    answers.push({ authorName: author, answer: true });
+    shuffled = answers
+      .map((a) => [Math.random(), a])
+      .sort((a, b) => a[0] - b[0])
+      .map((a) => a[1]);
     $(".next").show(); //populates next button, author and potential answers all at the same time
     $("div.first").empty();
     $(".quote").text(`${quoteNumber}. "${quote}"`);
-    $("div.first").append(`<input type="radio" name="option" value=${shuffled[0].answer}>
+    $("div.first")
+      .append(`<input type="radio" name="option" value=${shuffled[0].answer}>
     <label>${shuffled[0].authorName}</label><br><br>`);
-    $("div.first").append(`<input type="radio" name="option" value=${shuffled[1].answer}>
+    $("div.first")
+      .append(`<input type="radio" name="option" value=${shuffled[1].answer}>
     <label>${shuffled[1].authorName}</label><br><br>`);
-    $("div.first").append(`<input type="radio" name="option" value=${shuffled[2].answer}>
+    $("div.first")
+      .append(`<input type="radio" name="option" value=${shuffled[2].answer}>
     <label>${shuffled[2].authorName}</label><br>`);
   }
 
@@ -80,7 +90,7 @@ $(document).ready(() => {
   function FinalScore() {
     $.post("/api/score", {
       score: UserScore,
-      userid: id
+      userid: id,
     });
   }
 });

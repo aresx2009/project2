@@ -17,12 +17,12 @@ module.exports = function(app) {
   app.post("/api/signup", (req, res) => {
     db.User.create({
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
     })
       .then(() => {
         res.redirect(307, "/api/login");
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(401).json(err);
       });
   });
@@ -41,7 +41,7 @@ module.exports = function(app) {
     } else {
       res.json({
         email: req.user.email,
-        id: req.user.id
+        id: req.user.id,
       });
     }
   });
@@ -49,12 +49,12 @@ module.exports = function(app) {
   app.post("/api/score", (req, res) => {
     db.Score.create({
       score: req.body.score,
-      UserId: req.body.userid
+      UserId: req.body.userid,
     })
-      .then(newScore => {
+      .then((newScore) => {
         res.json(newScore);
       })
-      .catch(error => {
+      .catch((error) => {
         res.json(error);
       });
   });
@@ -62,9 +62,9 @@ module.exports = function(app) {
   app.get("/api/score/:userid", (req, res) => {
     db.Score.findAll({
       where: {
-        UserId: req.params.userid
-      }
-    }).then(data => {
+        UserId: req.params.userid,
+      },
+    }).then((data) => {
       res.json(data);
     });
   });
@@ -72,9 +72,9 @@ module.exports = function(app) {
   app.get("/api/score/:id", (req, res) => {
     db.Score.findAll({
       where: {
-        UserId: req.params.id
-      }
-    }).then(data => {
+        UserId: req.params.id,
+      },
+    }).then((data) => {
       res.json(data);
     });
   });
@@ -82,21 +82,21 @@ module.exports = function(app) {
   app.get("/api/alluser_data/:id", (req, res) => {
     db.User.findAll({
       where: {
-        Id: req.params.id
-      }
-    }).then(dbUser => {
+        Id: req.params.id,
+      },
+    }).then((dbUser) => {
       res.json(dbUser);
     });
   });
   //all user scores
   app.get("/api/score/", (req, res) => {
-    db.Score.findAll({}).then(dbScore => {
+    db.Score.findAll({}).then((dbScore) => {
       res.json(dbScore);
     });
   });
   // gettign quotes and authors from the public quote garden api--------------------------------
   app.get("/quotes", async (req, res) => {
-    const url = "https://quote-garden.herokuapp.com/api/v2/quotes/random";
+    const url = "https://quote-garden.herokuapp.com/api/v3/quotes/random";
     const fetchRes = await fetch(url);
     const json = await fetchRes.json();
     res.json(json);
